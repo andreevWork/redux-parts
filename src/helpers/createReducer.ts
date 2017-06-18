@@ -1,36 +1,54 @@
+import {ISimpleBlock} from "../interfaces";
+import {setInObjectByPath, utilReduceMerge} from "./utils";
+import {TYPE_DELIMITER} from "./formatActionType";
 
-import {ICommonBlock} from "../interfaces";
+export function createReducerFromCommon(common: ISimpleBlock[] = []) {
+    const reducer = utilReduceMerge(common, (block: ISimpleBlock) => {
+        return block.reducer
+    });
 
-export function createReducer(dictionary, initial_state = {}, common: ICommonBlock[] = []) {
-    dictionary = {
-        ...common.reduce((acc, block) => {
-            acc = {
-                ...acc,
-                ...block.reducer
-            };
-            return acc;
-        }, {}),
-        ...dictionary
-    };
+    return reducer;
+}
 
-    initial_state = {
-        ...common.reduce((acc, block) => {
-            acc = {
-                ...acc,
-                ...(block.initial_state || {})
-            };
-            return acc;
-        }, {}),
-        ...initial_state
-    };
-
+export function createReducer(dictionary, initial_state) {
     return function (state = initial_state, action) {
-        const fn = dictionary[action.type];
+        const {type} = action;
+        const fn = dictionary[type];
 
         if (fn) {
+            if (type.includes(TYPE_DELIMITER)) {
+                setStateByType(state, type, fn(getStateByType(state, type), action));
+
+                return state;
+            }
+
             return fn(state, action);
         }
 
         return state;
     }
+}
+
+
+function getStateByType(state, type: string) {
+    const path = type.split(TYPE_DELIMITER);
+    let sub_state = state;
+
+    // We remove last element, because it is action name
+    path.pop();
+
+    for (let key of path) {
+        sub_state = sub_state[key];
+    }
+
+    return sub_state;
+}
+
+function setStateByType(state, type: string, value) {
+    const path = type.split(TYPE_DELIMITER);
+
+    // We remove last element, because it is action name
+    path.pop();
+
+    setInObjectByPath(state, path, value);
 }

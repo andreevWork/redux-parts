@@ -43,6 +43,7 @@ export const SimpleBlock: ISimpleBlock = {
     initial_state: {
         initial: true
     },
+
     actions: {
         increment(num) {
             return num + 1;

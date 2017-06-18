@@ -89,3 +89,9 @@ export const BlockWithOnlyEntity: IComplexBlock = {
         simple: SimpleBlock
     }
 };
+
+export const BlockWithEntityInsideEntity: IComplexBlock = {
+    entity: {
+        just: BlockWithOnlyEntity
+    }
+};

@@ -1,43 +1,40 @@
 import {ISimpleBlock} from "../interfaces";
+import {utilReduceByKeys, utilReduceMerge} from "./utils";
+import {getTypeByParentName} from "./formatActionType";
 
-export function createActions(actions, reducer) {
+export function createActions(actions, reducer, entity_name: string = '') {
     return {
-        ...createActionsFromReducer(reducer),
-        ...createActionsFromDictionary(actions)
+        ...createActionsFromReducer(reducer, entity_name),
+        ...createActionsFromDictionary(actions, entity_name)
     }
 }
 
-export function createActionsFromCommon(common: ISimpleBlock[] = []) {
-    const actions = common.reduce((acc, block: ISimpleBlock) => {
-        acc = {
-            ...acc,
-            ...createActions(block.actions, block.reducer)
-        };
-        return acc;
-    }, {});
+export function createActionsFromCommon(common: ISimpleBlock[] = [], entity_name: string = '') {
+    const actions = utilReduceMerge(common, (block: ISimpleBlock) => {
+        return createActions(block.actions, block.reducer, entity_name);
+    });
 
     return actions;
 }
 
-function createActionsFromReducer(reducer = {}) {
-    const reducer_keys = Object.keys(reducer);
-
-    const actions = reducer_keys.reduce((acc, name) => {
-        acc[name] = createActionByType(name);
-        return acc;
-    }, {});
+function createActionsFromReducer(reducer = {}, entity_name: string = '') {
+    const actions = utilReduceByKeys(Object.keys(reducer), (key) => {
+        const type = getTypeByParentName(key, entity_name);
+        return createActionByType(type);
+    });
 
     return actions;
 }
 
-function createActionsFromDictionary(dictionary = {}) {
-    const actions = Object.keys(dictionary).reduce((acc, name) => {
-        acc[name] = createActionByFn(name, dictionary[name]);
-        return acc;
-    }, {});
+function createActionsFromDictionary(dictionary = {}, entity_name: string = '') {
+    const actions = utilReduceByKeys(Object.keys(dictionary), (key) => {
+        const type = getTypeByParentName(key, entity_name);
+        return createActionByFn(type, dictionary[key]);
+    });
     
     return actions;
 }
+
 function createActionByType(type) {    
     return function (payload) {
         return {

@@ -11,7 +11,10 @@ export interface ISimpleBlock {
     initial_state?: any;
 }
 
-export interface IComplexBlock extends Partial<ISimpleBlock> {
+export interface IComplexBlock {
+    reducer?: Reducer;
+    actions?: Actions;
+    initial_state?: any;
     common?: ISimpleBlock[];
     entity?: {
         [key: string]: IComplexBlock;
