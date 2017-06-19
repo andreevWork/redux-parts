@@ -1,38 +1,37 @@
-import {ISimpleBlock} from "../interfaces";
-import {utilReduceByKeys, utilReduceMerge} from "./utils";
-import {getTypeByParentName} from "./formatActionType";
+import {IComplexBlock, ISimpleBlock} from "../interfaces";
+import {addStringIfExist, utilReduceByKeys, utilReduceMerge} from "./utils";
 
-export function createActions(actions, reducer, entity_name: string = '') {
+export function createActions(block: IComplexBlock, parent_block_name?: string) {
+    const simple_blocks_actions = utilReduceMerge(block.simple_blocks, (block: ISimpleBlock) => {
+        return helperForCreateAction(block);
+    });
+    const main_actions = helperForCreateAction(block as ISimpleBlock);
+
     return {
-        ...createActionsFromReducer(reducer, entity_name),
-        ...createActionsFromDictionary(actions, entity_name)
+        ...simple_blocks_actions,
+        ...main_actions
+    };
+
+    function helperForCreateAction({reducer, actions}: ISimpleBlock) {
+        return {
+            ...createActionsFromReducer(reducer, parent_block_name),
+            ...createActionsFromDictionary(actions, parent_block_name)
+        }
     }
 }
 
-export function createActionsFromCommon(common: ISimpleBlock[] = [], entity_name: string = '') {
-    const actions = utilReduceMerge(common, (block: ISimpleBlock) => {
-        return createActions(block.actions, block.reducer, entity_name);
-    });
-
-    return actions;
-}
-
-function createActionsFromReducer(reducer = {}, entity_name: string = '') {
-    const actions = utilReduceByKeys(Object.keys(reducer), (key) => {
-        const type = getTypeByParentName(key, entity_name);
+function createActionsFromReducer(reducer = {}, parent_block_name: string) {
+    return utilReduceByKeys(Object.keys(reducer), (key) => {
+        const type = addStringIfExist(key, parent_block_name);
         return createActionByType(type);
     });
-
-    return actions;
 }
 
-function createActionsFromDictionary(dictionary = {}, entity_name: string = '') {
-    const actions = utilReduceByKeys(Object.keys(dictionary), (key) => {
-        const type = getTypeByParentName(key, entity_name);
+function createActionsFromDictionary(dictionary = {}, parent_block_name: string) {
+    return utilReduceByKeys(Object.keys(dictionary), (key) => {
+        const type = addStringIfExist(key, parent_block_name);
         return createActionByFn(type, dictionary[key]);
     });
-    
-    return actions;
 }
 
 function createActionByType(type) {    

@@ -6,29 +6,29 @@ import {
 } from "./blocks/complex_blocks";
 import {AnotherSimpleBlock, SimpleBlock} from "./blocks/simple_block";
 
-describe("blocks with common blocks", function() {
+describe("blocks with simple_blocks blocks", function() {
     let store;
 
-    describe('block with only "common" property consisting of one common block', () => {
+    describe('block with only "simple_blocks" property consisting of one simple_blocks block', () => {
         beforeEach(() => {
             store = Creator(BlockWithOnlyOneCommonBLock);
         });
 
-        it("actions from common from reducer", function() {
+        it("actions from simple_blocks from reducer", function() {
             const startAction = store.actions.start(123);
 
             expect(startAction.type).to.equal('start');
             expect(startAction.payload).to.equal(123);
         });
 
-        it("actions from common from dictionary", function() {
+        it("actions from simple_blocks from dictionary", function() {
             const incrementAction = store.actions.increment(1);
 
             expect(incrementAction.type).to.equal('increment');
             expect(incrementAction.payload).to.equal(2);
         });
 
-        it("reducer from common", function() {
+        it("reducer from simple_blocks", function() {
             const startAction = store.actions.start();
             const state = store.reducer(undefined, startAction);
 
@@ -42,33 +42,33 @@ describe("blocks with common blocks", function() {
         });
     });
 
-    describe('block with only "common" property consisting of multi common block', () => {
+    describe('block with only "simple_blocks" property consisting of multi simple_blocks block', () => {
         beforeEach(() => {
             store = Creator(BlockWithOnlyMultiCommonBLocks);
         });
 
-        it("actions from first common", function() {
+        it("actions from first simple_blocks", function() {
             const startAction = store.actions.start(123);
 
             expect(startAction.type).to.equal('start');
             expect(startAction.payload).to.equal(123);
         });
 
-        it("actions from second common", function() {
+        it("actions from second simple_blocks", function() {
             const addAction = store.actions.add(1);
 
             expect(addAction.type).to.equal('add');
             expect(addAction.payload).to.equal(1);
         });
 
-        it("reducer from first common", function() {
+        it("reducer from first simple_blocks", function() {
             const startAction = store.actions.start();
             const state = store.reducer(undefined, startAction);
 
             expect(state.increment_value).to.equal(0);
         });
 
-        it("reducer from second common", function() {
+        it("reducer from second simple_blocks", function() {
             const addAction = store.actions.add({value: 1});
             const state = store.reducer(undefined, addAction);
 
@@ -86,7 +86,7 @@ describe("blocks with common blocks", function() {
 
     });
 
-    describe('block with all simple block properties and common - tests about merge', () => {
+    describe('block with all simple block properties and simple_blocks - tests about merge', () => {
         beforeEach(() => {
             store = Creator(BlockWithoutEntities);
         });
@@ -96,7 +96,7 @@ describe("blocks with common blocks", function() {
 
             expect({
                 initial_value: 'own',
-                initial_value_1: 'common_2'
+                initial_value_1: 'simple_blocks_2'
             }).to.deep.equal(state);
         });
 
@@ -105,15 +105,15 @@ describe("blocks with common blocks", function() {
             const state = store.reducer(undefined, action);
 
             expect(state.value).to.equal('own');
-            expect(state.common_1_value).to.be.undefined;
+            expect(state.simple_blocks_1_value).to.be.undefined;
         });
 
-        it("right merge action from last common", function() {
-            const commonAction = store.actions.commonAction();
-            const state = store.reducer(undefined, commonAction);
+        it("right merge action from last simple_blocks", function() {
+            const simple_blocksAction = store.actions.simple_blocksAction();
+            const state = store.reducer(undefined, simple_blocksAction);
 
-            expect(state.common_2_value).to.equal('common_2');
-            expect(state.common_1_value).to.be.undefined;
+            expect(state.simple_blocks_2_value).to.equal('simple_blocks_2');
+            expect(state.simple_blocks_1_value).to.be.undefined;
         });
     });
 });

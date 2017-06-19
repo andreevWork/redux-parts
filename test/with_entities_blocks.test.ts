@@ -20,15 +20,13 @@ describe("blocks with entity blocks - ", function() {
 
         it("actions from entity from dictionary", function() {
             const incrementAction = store.actions.simple.increment(1);
-
             expect(incrementAction.type).to.equal('simple.increment');
             expect(incrementAction.payload).to.equal(2);
         });
 
-        it("reducer from common", function() {
+        it("reducer from simple_blocks", function() {
             const startAction = store.actions.simple.start();
             const state = store.reducer(undefined, startAction);
-
             expect(state.simple.increment_value).to.equal(0);
         });
 
@@ -45,6 +43,7 @@ describe("blocks with entity blocks - ", function() {
         });
 
         it("actions from entity from reducer", function() {
+            console.log(store.actions);
             const startAction = store.actions.just.simple.start(123);
 
             expect(startAction.type).to.equal('just.simple.start');
@@ -58,7 +57,7 @@ describe("blocks with entity blocks - ", function() {
             expect(incrementAction.payload).to.equal(2);
         });
 
-        it("reducer from common", function() {
+        it("reducer from simple_blocks", function() {
             const startAction = store.actions.just.simple.start();
             const state = store.reducer(undefined, startAction);
 

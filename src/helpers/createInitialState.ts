@@ -1,10 +1,18 @@
-import {ISimpleBlock} from "../interfaces";
+import {IComplexBlock, ISimpleBlock} from "../interfaces";
 import {utilReduceMerge} from "./utils";
 
-export function createInitialStateFromCommon(common: ISimpleBlock[] = []) {
-    const initial_state = utilReduceMerge(common, (block: ISimpleBlock) => {
-        return block.initial_state || {}
-    });
+export function createInitialState(block: IComplexBlock) {
+    const {simple_blocks, initial_state = {}} = block;
 
-    return initial_state;
+    return {
+        ...createInitialStateFromSimpleBlocks(simple_blocks),
+        ...initial_state
+    };
 }
+
+function createInitialStateFromSimpleBlocks(simple_blocks: ISimpleBlock[] = []) {
+    return utilReduceMerge(simple_blocks, (block: ISimpleBlock) => {
+        return block.initial_state || {};
+    });
+}
+

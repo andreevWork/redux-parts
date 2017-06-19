@@ -41,7 +41,7 @@ const set_block: ISimpleBlock = {
 };
 
 const set_and_increment_block: IComplexBlock = {
-    common: [
+    simple_blocks: [
         increment_block,
         set_block
     ]
@@ -69,11 +69,11 @@ const block: IComplexBlock = {
     },
 
 
-    common: [
+    simple_blocks: [
         increment_block
     ],
 
-    entity: {
+    complex_blocks: {
         counter_1: set_and_increment_block,
         counter_2: set_and_increment_block
     }

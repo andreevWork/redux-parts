@@ -2,13 +2,13 @@ import {IComplexBlock} from "../../src/interfaces";
 import {AnotherSimpleBlock, SimpleBlock} from "./simple_block";
 
 export const BlockWithOnlyOneCommonBLock: IComplexBlock = {
-    common: [
+    simple_blocks: [
         SimpleBlock
     ]
 };
 
 export const BlockWithOnlyMultiCommonBLocks: IComplexBlock = {
-    common: [
+    simple_blocks: [
         SimpleBlock,
         AnotherSimpleBlock
     ]
@@ -35,25 +35,25 @@ export const BlockWithoutEntities: IComplexBlock = {
         }
     },
 
-    common: [
+    simple_blocks: [
         {
             initial_state: {
-                initial_value: 'common',
-                initial_value_1: 'common_1'
+                initial_value: 'simple_blocks',
+                initial_value_1: 'simple_blocks_1'
             },
 
             reducer: {
                 action(state, {payload}) {
                     state = {
                         ...state,
-                        common_1_value: payload
+                        simple_blocks_1_value: payload
                     };
                     return state;
                 },
-                commonAction(state, {payload}) {
+                simple_blocksAction(state, {payload}) {
                     state = {
                         ...state,
-                        common_1_value: payload
+                        simple_blocks_1_value: payload
                     };
                     return state;
                 }
@@ -62,20 +62,20 @@ export const BlockWithoutEntities: IComplexBlock = {
 
         {
             initial_state: {
-                initial_value_1: 'common_2'
+                initial_value_1: 'simple_blocks_2'
             },
 
             actions: {
-                commonAction() {
-                    return 'common_2'
+                simple_blocksAction() {
+                    return 'simple_blocks_2'
                 }
             },
 
             reducer: {
-                commonAction(state, {payload}) {
+                simple_blocksAction(state, {payload}) {
                     state = {
                         ...state,
-                        common_2_value: payload
+                        simple_blocks_2_value: payload
                     };
                     return state;
                 }
@@ -85,13 +85,13 @@ export const BlockWithoutEntities: IComplexBlock = {
 };
 
 export const BlockWithOnlyEntity: IComplexBlock = {
-    entity: {
+    complex_blocks: {
         simple: SimpleBlock
     }
 };
 
 export const BlockWithEntityInsideEntity: IComplexBlock = {
-    entity: {
+    complex_blocks: {
         just: BlockWithOnlyEntity
     }
 };

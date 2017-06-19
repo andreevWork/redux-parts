@@ -15,8 +15,9 @@ export interface IComplexBlock {
     reducer?: Reducer;
     actions?: Actions;
     initial_state?: any;
-    common?: ISimpleBlock[];
-    entity?: {
+
+    simple_blocks?: ISimpleBlock[];
+    complex_blocks?: {
         [key: string]: IComplexBlock;
     }
 }
