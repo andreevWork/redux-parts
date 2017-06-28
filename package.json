@@ -1,5 +1,5 @@
 {
-  "name": "redux-oopsome",
+  "name": "redux-parts",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
@@ -8,15 +8,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/andreevWork/redux-oopsome.git"
+    "url": "git+https://github.com/andreevWork/redux-parts.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/andreevWork/redux-oopsome/issues"
+    "url": "https://github.com/andreevWork/redux-parts/issues"
   },
-  "homepage": "https://github.com/andreevWork/redux-oopsome#readme",
+  "homepage": "https://github.com/andreevWork/redux-parts#readme",
   "dependencies": {},
   "devDependencies": {
     "@types/chai": "^4.0.0",
