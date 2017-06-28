@@ -1,17 +1,17 @@
-import {IComplexBlock, ISimpleBlock} from "../interfaces";
+import {IComplexPart, ISimplePart} from "../interfaces";
 import {utilReduceMerge} from "./utils";
 
-export function createReducer(block: IComplexBlock) {
-    const {simple_blocks, reducer = {}} = block;
+export function createReducer(part: IComplexPart) {
+    const {simple_parts, reducer = {}} = part;
 
     return  {
-        ...createReducerFromSimpleBlocks(simple_blocks),
+        ...createReducerFromSimple(simple_parts),
         ...reducer
     };
 }
 
-function createReducerFromSimpleBlocks(simple_blocks: ISimpleBlock[] = []) {
-    return utilReduceMerge(simple_blocks, (block: ISimpleBlock) => {
-        return block.reducer
+function createReducerFromSimple(simple_parts: ISimplePart[] = []) {
+    return utilReduceMerge(simple_parts, (part: ISimplePart) => {
+        return part.reducer
     });
 }

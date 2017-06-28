@@ -17,12 +17,13 @@
     "url": "https://github.com/andreevWork/redux-oopsome/issues"
   },
   "homepage": "https://github.com/andreevWork/redux-oopsome#readme",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "@types/chai": "^4.0.0",
     "@types/mocha": "^2.2.41",
     "chai": "^4.0.2",
-    "mocha": "^3.4.2"
+    "mocha": "^3.4.2",
+    "ts-node": "^3.1.0",
+    "typescript": "^2.3.4"
   }
 }

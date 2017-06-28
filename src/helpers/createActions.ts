@@ -1,35 +1,35 @@
-import {IComplexBlock, ISimpleBlock} from "../interfaces";
+import {IComplexPart, ISimplePart} from "../interfaces";
 import {addStringIfExist, utilReduceByKeys, utilReduceMerge} from "./utils";
 
-export function createActions(block: IComplexBlock, parent_block_name?: string) {
-    const simple_blocks_actions = utilReduceMerge(block.simple_blocks, (block: ISimpleBlock) => {
-        return helperForCreateAction(block);
+export function createActions(part: IComplexPart, parent_part_name?: string) {
+    const simple_parts_actions = utilReduceMerge(part.simple_parts, (part: ISimplePart) => {
+        return helperForCreateAction(part);
     });
-    const main_actions = helperForCreateAction(block as ISimpleBlock);
+    const main_actions = helperForCreateAction(part as ISimplePart);
 
     return {
-        ...simple_blocks_actions,
+        ...simple_parts_actions,
         ...main_actions
     };
 
-    function helperForCreateAction({reducer, actions}: ISimpleBlock) {
+    function helperForCreateAction({reducer, actions}: ISimplePart) {
         return {
-            ...createActionsFromReducer(reducer, parent_block_name),
-            ...createActionsFromDictionary(actions, parent_block_name)
+            ...createActionsFromReducer(reducer, parent_part_name),
+            ...createActionsFromDictionary(actions, parent_part_name)
         }
     }
 }
 
-function createActionsFromReducer(reducer = {}, parent_block_name: string) {
+function createActionsFromReducer(reducer = {}, parent_part_name: string) {
     return utilReduceByKeys(Object.keys(reducer), (key) => {
-        const type = addStringIfExist(key, parent_block_name);
+        const type = addStringIfExist(key, parent_part_name);
         return createActionByType(type);
     });
 }
 
-function createActionsFromDictionary(dictionary = {}, parent_block_name: string) {
+function createActionsFromDictionary(dictionary = {}, parent_part_name: string) {
     return utilReduceByKeys(Object.keys(dictionary), (key) => {
-        const type = addStringIfExist(key, parent_block_name);
+        const type = addStringIfExist(key, parent_part_name);
         return createActionByFn(type, dictionary[key]);
     });
 }

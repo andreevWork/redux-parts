@@ -1,134 +1,144 @@
-import {Creator} from '../src/creator';
+import {Creator} from '../src/index';
 import {expect} from 'chai';
-import {IComplexBlock, ISimpleBlock} from "../src/interfaces";
+import {IComplexPart} from "../src/interfaces";
+import {CounterPart} from "./parts/counter";
 
-const increment_block: ISimpleBlock = {
-    initial_state: {
-        value: 0
-    },
-
-    reducer: {
-        add(state, action) {
-            state = {
-                ...state,
-                value: state.value + 1
-            };
-            return state;
-        }
+const complex_counter_part: IComplexPart = {
+    complex_parts: {
+        counter: CounterPart
     }
 };
 
-const set_block: ISimpleBlock = {
-    initial_state: {
-        value: 0
-    },
+let store;
 
-    actions: {
-        set(value) {
-            return {value};
-        }
-    },
-
-    reducer: {
-        set(state, {payload}) {
-            state = {
-                ...state,
-                value: payload.value
-            };
-            return state;
-        }
-    }
-};
-
-const set_and_increment_block: IComplexBlock = {
-    simple_blocks: [
-        increment_block,
-        set_block
-    ]
-};
-
-const block: IComplexBlock = {
-    initial_state: {
-        text: 'initial'
-    },
-
-    actions: {
-        changeText(text) {
-            return {text};
-        }
-    },
-
-    reducer: {
-        changeText(state, {payload}) {
-            state = {
-                ...state,
-                text: payload.text
-            };
-            return state;
-        }
-    },
-
-
-    simple_blocks: [
-        increment_block
-    ],
-
-    complex_blocks: {
-        counter_1: set_and_increment_block,
-        counter_2: set_and_increment_block
-    }
-};
-
-describe('full complex block -', () => {
-    let store;
+describe("complex part - ", function() {
 
     beforeEach(() => {
-        store = Creator(block);
+        store = Creator(complex_counter_part);
     });
 
-    it('initial value - right merge', () => {
+    it("actions - from reducer", function() {
+        const incrementAction: any = store.actions.counter.increment(123);
+
+        expect(incrementAction.type).to.equal('counter.increment');
+        expect(incrementAction.payload).to.equal(123);
+    });
+
+    it("actions - from actions", function() {
+        const payload = 10;
+        const addAction: any = store.actions.counter.add(payload);
+
+        expect(addAction.payload).to.deep.equal({value: payload});
+    });
+
+    it("reducer", function() {
+        const incrementAction = store.actions.counter.increment();
+        const state = store.reducer(undefined, incrementAction);
+
+        expect(state.counter.value).to.equal(1);
+    });
+
+    it("initial state", function() {
         const state = store.reducer(undefined, {type: 'none'});
 
-        expect(state).to.deep.equal({
-            text: 'initial',
-            value: 0,
-            counter_1: {
-                value: 0
-            },
-            counter_2: {
-                value: 0
-            }
-        })
+        expect(CounterPart.initial_state).to.deep.equal(state.counter);
+    });
+});
+
+const sub_complex_counter_part: IComplexPart = {
+    complex_parts: {
+        sub: complex_counter_part
+    }
+};
+
+describe('complex part inside complex part -', () => {
+    beforeEach(() => {
+        store = Creator(sub_complex_counter_part);
     });
 
+    it("actions - from reducer", function() {
+        const incrementAction: any = store.actions.sub.counter.increment(123);
 
-    it('send actions and check new state', () => {
-        const new_text = 'new_text';
-        const new_value = 20;
-        const changeTextAction = store.actions.changeText(new_text);
-        const addAction = store.actions.add();
-        const addCounter1Action = store.actions.counter_1.add();
-        const setCounter2Action = store.actions.counter_2.set(new_value);
-        let state;
+        expect(incrementAction.type).to.equal('sub.counter.increment');
+        expect(incrementAction.payload).to.equal(123);
+    });
+
+    it("actions - from actions", function() {
+        const payload = 10;
+        const addAction: any = store.actions.sub.counter.add(payload);
+
+        expect(addAction.payload).to.deep.equal({value: payload});
+    });
+
+    it("reducer", function() {
+        const incrementAction = store.actions.sub.counter.increment();
+        const state = store.reducer(undefined, incrementAction);
+        console.log(state);
+        expect(state.sub.counter.value).to.equal(1);
+    });
+
+    it("initial state", function() {
+        const state = store.reducer(undefined, {type: 'none'});
+
+        expect(CounterPart.initial_state).to.deep.equal(state.sub.counter);
+    });
+});
+
+const complex_and_base_part: IComplexPart = {
+    simple_parts: [
+        CounterPart
+    ],
+
+    complex_parts: {
+        counter: CounterPart
+    }
+};
+
+describe('complex part and base -', () => {
+    beforeEach(() => {
+        store = Creator(complex_and_base_part);
+    });
+
+    it("actions - from reducer", function() {
+        const incrementComplexAction: any = store.actions.counter.increment();
+        const incrementAction: any = store.actions.increment();
+
+        expect(incrementComplexAction.type).to.equal('counter.increment');
+        expect(incrementAction.type).to.equal('increment');
+    });
+
+    it("actions - from actions", function() {
+        const payload = 10;
+        const addComplexAction: any = store.actions.counter.add(payload);
+        const addAction: any = store.actions.add(payload);
 
 
-        state = store.reducer(state, changeTextAction);
-        state = store.reducer(state, addAction);
-        state = store.reducer(state, addAction);
-        state = store.reducer(state, addAction);
-        state = store.reducer(state, addCounter1Action);
-        state = store.reducer(state, addCounter1Action);
-        state = store.reducer(state, setCounter2Action);
+        expect(addComplexAction.type).to.equal('counter.add');
+        expect(addAction.type).to.equal('add');
+        expect(addComplexAction.payload).to.deep.equal({value: payload});
+        expect(addAction.payload).to.deep.equal({value: payload});
+    });
 
-        expect(state).to.deep.equal({
-            text: new_text,
-            value: 3,
-            counter_1: {
-                value: 2
-            },
-            counter_2: {
-                value: new_value
-            }
-        })
+    it("reducer - complex", function() {
+        const incrementAction = store.actions.counter.increment();
+        const state = store.reducer(undefined, incrementAction);
+
+        expect(state.counter.value).to.equal(1);
+    });
+
+    it("reducer - base", function() {
+        const incrementAction = store.actions.increment();
+        const state = store.reducer(undefined, incrementAction);
+
+        expect(state.value).to.equal(1);
+    });
+
+    it("initial state", function() {
+        const state = store.reducer(undefined, {type: 'none'});
+
+        expect({
+            ...CounterPart.initial_state,
+            counter: CounterPart.initial_state
+        }).to.deep.equal(state);
     });
 });

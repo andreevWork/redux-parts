@@ -1,18 +1,18 @@
-import {IComplexBlock, ISimpleBlock} from "../interfaces";
+import {IComplexPart, ISimplePart} from "../interfaces";
 import {utilReduceMerge} from "./utils";
 
-export function createInitialState(block: IComplexBlock) {
-    const {simple_blocks, initial_state = {}} = block;
+export function createInitialState(part: IComplexPart) {
+    const {simple_parts, initial_state = {}} = part;
 
     return {
-        ...createInitialStateFromSimpleBlocks(simple_blocks),
+        ...createInitialStateFromSimple(simple_parts),
         ...initial_state
     };
 }
 
-function createInitialStateFromSimpleBlocks(simple_blocks: ISimpleBlock[] = []) {
-    return utilReduceMerge(simple_blocks, (block: ISimpleBlock) => {
-        return block.initial_state || {};
+function createInitialStateFromSimple(simple_parts: ISimplePart[] = []) {
+    return utilReduceMerge(simple_parts, (part: ISimplePart) => {
+        return part.initial_state || {};
     });
 }
 
