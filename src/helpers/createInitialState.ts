@@ -1,5 +1,5 @@
 import {IComplexPart, ISimplePart} from "../interfaces";
-import {utilReduceMerge} from "./utils";
+import {reduceMerge} from "./utils";
 
 export function createInitialState(part: IComplexPart) {
     const {simple_parts, initial_state = {}} = part;
@@ -11,7 +11,7 @@ export function createInitialState(part: IComplexPart) {
 }
 
 function createInitialStateFromSimple(simple_parts: ISimplePart[] = []) {
-    return utilReduceMerge(simple_parts, (part: ISimplePart) => {
+    return reduceMerge(simple_parts, (part: ISimplePart) => {
         return part.initial_state || {};
     });
 }

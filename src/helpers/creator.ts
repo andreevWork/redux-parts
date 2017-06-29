@@ -2,28 +2,23 @@ import {IComplexPart} from "../interfaces";
 import {createActions} from "./createActions";
 import {createReducer} from "./createReducer";
 import {createInitialState} from "./createInitialState";
-import {addStringIfExist, mergeByPath} from "./utils";
-
-interface IQueueItem {
-    part: IComplexPart;
-    part_name: string;
-}
+import {concatStrings, mergeByPath} from "./utils";
 
 export function creator(part: IComplexPart) {
     let actions = createActions(part);
     let reducer = createReducer(part);
     let initial_state = createInitialState(part);
 
-    const queue: IQueueItem[] = getQueueItemsOfComplexBlocks(part.complex_parts);
+    const queue = getComplexParts(part.complex_parts);
 
     while(queue.length) {
-        const {part, part_name} = queue.pop();
+        const {part, path} = queue.pop();
 
-        actions = mergeByPath(actions, part_name, createActions(part, part_name));
-        reducer = mergeByPath(reducer, part_name, createReducer(part));
-        initial_state = mergeByPath(initial_state, part_name, createInitialState(part));
+        actions = mergeByPath(actions, path, createActions(part, path));
+        reducer = mergeByPath(reducer, path, createReducer(part));
+        initial_state = mergeByPath(initial_state, path, createInitialState(part));
 
-        queue.push(...getQueueItemsOfComplexBlocks(part.complex_parts, part_name));
+        queue.push(...getComplexParts(part.complex_parts, path));
     }
 
     return {
@@ -33,10 +28,10 @@ export function creator(part: IComplexPart) {
     }
 }
 
-function getQueueItemsOfComplexBlocks(complex_parts = {}, parent_name: string = '') {
+function getComplexParts(complex_parts = {}, path: string = '') {
     return Object.keys(complex_parts)
         .map(part_name => ({
             part: complex_parts[part_name],
-            part_name: addStringIfExist(part_name, parent_name)
+            path: concatStrings(part_name, path)
         }));
 }

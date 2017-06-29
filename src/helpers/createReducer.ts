@@ -1,5 +1,5 @@
 import {IComplexPart, ISimplePart} from "../interfaces";
-import {utilReduceMerge} from "./utils";
+import {reduceMerge} from "./utils";
 
 export function createReducer(part: IComplexPart) {
     const {simple_parts, reducer = {}} = part;
@@ -11,7 +11,7 @@ export function createReducer(part: IComplexPart) {
 }
 
 function createReducerFromSimple(simple_parts: ISimplePart[] = []) {
-    return utilReduceMerge(simple_parts, (part: ISimplePart) => {
+    return reduceMerge(simple_parts, (part: ISimplePart) => {
         return part.reducer
     });
 }

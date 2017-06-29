@@ -1,13 +1,13 @@
 import {DELIMITER} from "./constants";
 
-export function utilReduceByKeys(arr: any[] = [], cb: any) {
+export function reduceByKeys(arr: any[] = [], cb: any) {
     return arr.reduce((acc, key) => {
         acc[key] = cb(key);
         return acc;
     }, {});
 }
 
-export function utilReduceMerge(arr: any[] = [], cb: (item: any) => Object) {
+export function reduceMerge(arr: any[] = [], cb: (item: any) => Object) {
     return  arr.reduce((acc, item) => {
         acc = {
             ...acc,
@@ -18,7 +18,7 @@ export function utilReduceMerge(arr: any[] = [], cb: (item: any) => Object) {
     }, {});
 }
 
-export function addStringIfExist(str: string, str_or_null?: string) {
+export function concatStrings(str: string, str_or_null?: string) {
     return `${str_or_null ? `${str_or_null}${DELIMITER}` : ''}${str}`;
 }
 
@@ -56,17 +56,28 @@ export function mergeByPath(obj: any, str: string, value: any, delimiter: string
 
     const path = str.split(delimiter);
     const last_key = path.pop();
-    let cache;
-    const new_obj = cache = { ...obj };
+    const new_obj = {
+        ...obj
+    };
+
+    let nested = new_obj;
+    let nested_value;
 
     for (let key of path) {
-        cache[key] = {
-            ...cache[key]
+        nested_value = nested[key];
+
+        if (!nested_value || typeof nested_value !== 'object') {
+            throw Error(`mergeByPath: key "${key}" in path "${str}" contains value type "${typeof nested_value}", not object`);
+        }
+
+        nested[key] = {
+            ...nested_value
         };
-        cache = cache[key];
+
+        nested = nested[key];
     }
 
-    cache[last_key]= value;
+    nested[last_key]= value;
 
     return new_obj;
 }

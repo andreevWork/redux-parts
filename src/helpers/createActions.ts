@@ -1,8 +1,8 @@
 import {IComplexPart, ISimplePart} from "../interfaces";
-import {addStringIfExist, utilReduceByKeys, utilReduceMerge} from "./utils";
+import {concatStrings, reduceByKeys, reduceMerge} from "./utils";
 
-export function createActions(part: IComplexPart, parent_part_name?: string) {
-    const simple_parts_actions = utilReduceMerge(part.simple_parts, (part: ISimplePart) => {
+export function createActions(part: IComplexPart, path?: string) {
+    const simple_parts_actions = reduceMerge(part.simple_parts, (part: ISimplePart) => {
         return helperForCreateAction(part);
     });
     const main_actions = helperForCreateAction(part as ISimplePart);
@@ -14,23 +14,24 @@ export function createActions(part: IComplexPart, parent_part_name?: string) {
 
     function helperForCreateAction({reducer, actions}: ISimplePart) {
         return {
-            ...createActionsFromReducer(reducer, parent_part_name),
-            ...createActionsFromDictionary(actions, parent_part_name)
+            ...createActionsFromReducer(reducer, path),
+            ...createActionsFromDictionary(actions, path)
         }
     }
 }
 
-function createActionsFromReducer(reducer = {}, parent_part_name: string) {
-    return utilReduceByKeys(Object.keys(reducer), (key) => {
-        const type = addStringIfExist(key, parent_part_name);
+function createActionsFromReducer(reducer = {}, path: string) {
+    return reduceByKeys(Object.keys(reducer), (key) => {
+        const type = concatStrings(key, path);
         return createActionByType(type);
     });
 }
 
-function createActionsFromDictionary(dictionary = {}, parent_part_name: string) {
-    return utilReduceByKeys(Object.keys(dictionary), (key) => {
-        const type = addStringIfExist(key, parent_part_name);
-        return createActionByFn(type, dictionary[key]);
+function createActionsFromDictionary(dictionary = {}, path: string) {
+    return reduceByKeys(Object.keys(dictionary), (key) => {
+        const type = concatStrings(key, path);
+        const fn = dictionary[key];
+        return createActionByFn(type, fn);
     });
 }
 

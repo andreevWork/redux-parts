@@ -1,5 +1,6 @@
 import {expect} from 'chai';
-import {getByPath, mergeByPath} from "../src/helpers/utils";
+import {concatStrings, getByPath, mergeByPath, reduceByKeys, reduceMerge} from "../src/helpers/utils";
+import {DELIMITER} from "../src/helpers/constants";
 
 describe("utils - ", function() {
     describe("getByPath ", function() {
@@ -78,10 +79,54 @@ describe("utils - ", function() {
             expect(() => mergeByPath(obj, ['wrong', 'way'] as any, 5)).to.throw('mergeByPath: second param should be a string type');
         });
 
-        it("first param not object - retur null", function() {
+        it("first param not object - return null", function() {
             expect(mergeByPath(null, 'a.b.c.d', 5)).to.be.null;
             expect(mergeByPath([1, 2, 3], 'a.b.c.d', 5)).to.be.null;
             expect(mergeByPath(() => {}, 'a.b.c.d', 5)).to.be.null;
+        });
+
+
+        it("If not value by path - throw error", function() {
+            expect(() => mergeByPath({a: 10}, 'a.b', 5)).to.throw('mergeByPath: key "a" in path "a.b" contains value type "number", not object');
+        });
+
+    });
+
+    describe("concatStrings ", function() {
+
+        it("two strings", function() {
+            expect(concatStrings('a', 'b')).to.be.equal(`b${DELIMITER}a`);
+        });
+
+        it("without second string", function() {
+            expect(concatStrings('a', null)).to.be.equal(`a`);
+        });
+    });
+
+
+    describe("reduceByKeys ", function() {
+
+        it("work", function() {
+            const arr = ['a', 'b'];
+            const result = reduceByKeys(arr, key => key.toUpperCase());
+
+            expect(result).to.deep.equal({
+                a: 'A',
+                b: 'B'
+            });
+        });
+    });
+
+    describe("reduceMerge ", function() {
+
+        it("work", function() {
+            const arr = [{name: 'name_1'}, {name: 'name_2'}];
+            const result = reduceMerge(arr, item => ({[item.name]: 5}));
+
+            expect(result).to.deep.equal({
+                name_1: 5,
+                name_2: 5
+            });
         });
     });
 });
