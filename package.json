@@ -1,10 +1,12 @@
 {
   "name": "redux-parts",
-  "version": "1.0.0",
+  "version": "0.1.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "mocha -r ts-node/register test/**/*.test.ts"
+    "test": "mocha -r ts-node/register test/**/*.test.ts",
+    "clean": "rm -rf dist",
+    "build": "npm run clean && cd src && tsc"
   },
   "repository": {
     "type": "git",

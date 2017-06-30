@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "module": "ES6",
+    "target": "ES5",
+    "removeComments": true,
+    "outDir": "../dist",
+    "declaration": true,
+    "sourceMap": true
+  },
+  "files": [
+    "index.ts"
+  ]
+}
