@@ -14,16 +14,18 @@ export  function buildReducer(reducer, initial_state) {
         if (type.includes(DELIMITER)) {
             handle_action = getByPath(reducer, type);
 
-            const path_local_state = type
-                .split(DELIMITER)
-                .slice(0, -1)
-                .join(DELIMITER);
+            if (handle_action) {
+                const path_local_state = type
+                    .split(DELIMITER)
+                    .slice(0, -1)
+                    .join(DELIMITER);
 
-            const local_state = getByPath(state, path_local_state);
+                const local_state = getByPath(state, path_local_state);
 
-            const new_local_state = handle_action(local_state, action);
+                const new_local_state = handle_action(local_state, action);
 
-            return mergeByPath(state, path_local_state, new_local_state);
+                return mergeByPath(state, path_local_state, new_local_state);
+            }
         }
 
         return state;
