@@ -12,6 +12,8 @@ Example app: [redux-parts-example](https://github.com/andreevWork/redux-parts-ex
 - [API](#api)
   * [Creator](#creator)
 - [Part](#part)
+- [SimplePart](#simplepart)
+- [ComplexPart](#complexpart)
 
 ***
 
@@ -46,8 +48,41 @@ const {actions, reducer} = Creator(part);
 
 "Part" is just javascript object, with such properties:
 
-* **initial_state** {Object}
-* **reducer** {Object}
-* **actions** {Object}
-* **simple_parts** {Array}
-* **complex_parts** {Object}
+* *reducer* {Object}
+* *initial_state* {Object}
+* *actions* {Object}
+* *simple_parts* {Array}
+* *complex_parts* {Object}
+
+## SimplePart
+
+Simple part may include only these three properties:
+* *reducer* {Object} **required**
+* *initial_state* {Object}
+* *actions* {Object}
+
+Simple part - it is the smallest possible part. It is like mixin. You can create many simple parts and combine them in [ComplexPart](#complexpart). For example - simple part for load data:
+```javascript
+const LoadDataPart = {
+ reducer: {
+ 
+  loadData(state, action) {
+   return {
+    ...state,
+    is_pending: true
+   }
+  },
+  
+  loadDataSuccess(state, action) {
+   return {
+    ...state,
+    data: action.payload.data,
+    is_pending: false
+   }
+  }
+  
+ }
+```
+
+
+## ComplexPart
