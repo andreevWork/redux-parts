@@ -4,7 +4,7 @@ It`s just a try to create a tool for using with [Redux](https://github.com/react
 
 ---
 
-Example app: TODO
+Example app: [redux-parts-example](https://github.com/andreevWork/redux-parts-example)
 
 ***
 
