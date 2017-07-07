@@ -8,10 +8,10 @@ Example app: [redux-parts-example](https://github.com/andreevWork/redux-parts-ex
 
 ***
 ## Table of contents
-1. [Install](#install)
-2. [API](#api)
-2.1. [Creator](#api.creator)
-3. [Part](#part)
+- [Install](#install)
+- [API](#api)
+ * [Creator](#creator)
+- [Part](#part)
 
 ***
 
