@@ -1,14 +1,26 @@
 # redux-parts
 
-It`s just a try to create a tool for using with [Redux](https://github.com/reactjs/redux).
+It`s just a try to create a better tool for using [Redux](https://github.com/reactjs/redux).
 
----
+***
 
 Example app: [redux-parts-example](https://github.com/andreevWork/redux-parts-example)
 
 ***
+## Table of contents
+1. [Install](#install)
+2. [Part](#part)
+3. [Third Example](#third-example)
 
-## What is it "part"?
+***
+
+## Install
+
+```javascropt
+npm i -S redux-parts
+```
+
+## Part
 
 Part is just javascript object. For example - counter part :
 ```javascript
