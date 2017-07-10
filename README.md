@@ -151,7 +151,7 @@ expect(state).to.deep.equal({value: 15})
 ```
 
 ### simple_parts
-It is array of [SimpleParts](#simplepart). For example we have some logic, which we wanna add to different part. We can create a [SimpleParts](#simplepart) and just add it to our part. Because the counter part from above example is a [SimpleParts](#simplepart), we can use it our example
+It is array of [SimpleParts](#simplepart). For example we have some logic, which we wanna add to different part. We can create a [SimpleParts](#simplepart) and just add it to our part. Because the counter part from above example is a [SimplePart](#simplepart), we can use it in our example
 ```javascript
 // simple part
  const counter_part = //code from example above
