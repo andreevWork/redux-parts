@@ -14,6 +14,7 @@ Example app: [redux-parts-example](https://github.com/andreevWork/redux-parts-ex
 - [Part](#part)
   * [Reducer](#reducer)
   * [Initial state](#initial_state)
+  * [Simple parts](#simple_parts)
   * [Actions](#actions)
 - [SimplePart](#simplepart)
 - [ComplexPart](#complexpart)
@@ -54,7 +55,7 @@ const {actions, reducer} = Creator(part);
 * [reducer](#reducer) {Object}
 * [initial_state](#initial_state) {Object}
 * [actions](#actions) {Object}
-* *simple_parts* {Array}
+* [simple_parts](#simple_parts) {Array}
 * *complex_parts* {Object}
 
 ### reducer
@@ -148,6 +149,33 @@ state = reducer(state, add_action);
 expect(add_action).to.deep.equal({type: 'add', payload: 15})
 expect(state).to.deep.equal({value: 15})
 ```
+
+### simple_parts
+It is array of [SimpleParts](#simplepart). For example we have some logic, which we wanna add to different part. We can create a [SimpleParts](#simplepart) and just add it to our part. Because the counter part from above example is a [SimpleParts](#simplepart), we can use it our example
+```javascript
+// simple part
+ const counter_part = //code from example above
+ 
+ const part = {
+  simple_parts: [
+   counter_parts
+  ]
+ }
+ 
+const {actions, reducer} = Creator(part);
+
+let state;
+
+// The same actions and reducer
+const add_action = actions.add(5, 10);
+state = reducer(state, add_action);
+
+// The same test
+expect(add_action).to.deep.equal({type: 'add', payload: 15})
+expect(state).to.deep.equal({value: 15})
+```
+As we can see, our part with "simple_parts" property works exactly, how just counter part, it happens because "simple_parts" is just array of mixins, nothing more.
+
 
 
 ## SimplePart
