@@ -1,6 +1,6 @@
 # redux-parts
 
-It`s just a try to create a better tool for using [Redux](https://github.com/reactjs/redux).
+Is\`s just a try to create a tool for helps you create and manage your reducer and actions.
 
 Redux-parts is a small library, with no dependies. It has small and very human friendly API. 
 
@@ -52,6 +52,7 @@ Example app: [redux-parts-example](https://github.com/andreevWork/redux-parts-ex
 
 ## Table of contents
 - [Install](#install)
+- [Basic terms](#basicterms)
 - [API](#api)
   * [Creator](#creator)
 - [Part](#part)
@@ -70,6 +71,16 @@ Example app: [redux-parts-example](https://github.com/andreevWork/redux-parts-ex
 ```javascropt
 npm i -S redux-parts
 ```
+
+---
+
+## BasicTerms
+
+Here describes basic terms, which helps you to start.
+
+* **[Part](#part)** - is the smallest bit of your code. Is\`s just a simple object with few properties. Parts may be **simple** or   **complex**.
+* **[SimplePart](#simplepart)** - looks like mixins. Simple parts allows you write many little pieces and just merge them in **complex** part.
+* **[ComplexPart](#complexpart)** - is a little bit difficult than **simple** part. With complex part you can build a deep state, with sub states. Also you can mixin simple parts into your complex part. It\`s easy, see [examples]() or [example app](https://github.com/andreevWork/redux-parts-example).
 
 ---
 
