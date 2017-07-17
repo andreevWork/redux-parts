@@ -79,8 +79,8 @@ npm i -S redux-parts
 Here describes basic terms, which helps you to start.
 
 * **[Part](#part)** - is the smallest bit of your code. Is\`s just a simple object with few properties. Parts may be **simple** or   **complex**.
-* **[SimplePart](#simplepart)** - looks like mixins. Simple parts allows you write many little pieces and just merge them in **complex** part.
-* **[ComplexPart](#complexpart)** - is a little bit difficult than **simple** part. With complex part you can build a deep state, with sub states. Also you can mixin simple parts into your complex part. It\`s easy, see [examples]() or [example app](https://github.com/andreevWork/redux-parts-example).
+  * **[SimplePart](#simplepart)** - looks like mixins. Simple parts allows you write many little pieces and just merge them in **complex** part.
+  * **[ComplexPart](#complexpart)** - is a little bit difficult than **simple** part. With complex part you can build a deep state, with sub states. Also you can mixin simple parts into your complex part. It\`s easy, see [examples]() or [example app](https://github.com/andreevWork/redux-parts-example).
 
 ---
 
