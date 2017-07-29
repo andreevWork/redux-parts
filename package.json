@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/index.js",
   "scripts": {
-    "test": "mocha -r ts-node/register test/**/*.test.ts",
+    "test": "mocha -r ts-node/register test/**/*.test.ts examples/**/*.ts",
     "clean": "rm -rf dist",
     "build": "npm run clean && cd src && tsc"
   },
