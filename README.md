@@ -47,6 +47,7 @@ state.text === 'Hello World!'
 ***
 
 Example app: [redux-parts-example](https://github.com/andreevWork/redux-parts-example)
+Example code: [code](https://github.com/andreevWork/redux-parts/tree/master/examples)
 
 ***
 
@@ -319,7 +320,7 @@ Simple part may include only these three properties:
 * *initial_state* {Object}
 * *actions* {Object}
 
-Simple part - it is the smallest possible part. It is like mixin. You can create many simple parts and combine them in [ComplexPart](#complexpart). For example - simple part for load data:
+Simple part - is the smallest possible part. It is like mixin. You can create many simple parts and combine them in [ComplexPart](#complexpart). Also can be a root part, if you have really small application) For example - simple part for load data:
 ```javascript
 const LoadDataPart = {
  reducer: {
@@ -344,3 +345,5 @@ const LoadDataPart = {
 
 
 ## ComplexPart
+
+Complex part - is the heart of library. With Complex part you can build big and deep state very easily and declarative style. Complex part has many usage examples and many of them described above, but if after reading this article you have a problem with use Complex part, please take a look examples [code](https://github.com/andreevWork/redux-parts/tree/master/examples) and/or  [app](https://github.com/andreevWork/redux-parts-example). 
