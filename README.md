@@ -46,8 +46,9 @@ state.text === 'Hello World!'
 
 ***
 
-Example app: [redux-parts-example](https://github.com/andreevWork/redux-parts-example)
-Example code: [code](https://github.com/andreevWork/redux-parts/tree/master/examples)
+[Example app](https://github.com/andreevWork/redux-parts-example)
+
+[Example code](https://github.com/andreevWork/redux-parts/tree/master/examples)
 
 ***
 
@@ -91,7 +92,7 @@ interface ISimplePart {
   * **[ComplexPart](#complexpart)** - is a little bit difficult than **simple** part. With complex part you can build a deep state, with sub states. Also you can mixin simple parts into your complex part. It\`s easy, see [code examples](https://github.com/andreevWork/redux-parts/tree/master/examples) or [example app](https://github.com/andreevWork/redux-parts-example). Interface:
 ```javascript
 interface IComplexPart {
-  reducer: Dictionary<Functions>;
+  reducer?: Dictionary<Functions>;
   actions?: Dictionary<Functions>;
   initial_state?: any;
   
