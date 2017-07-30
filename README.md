@@ -1,6 +1,6 @@
 # redux-parts
 
-Is\`s just a try to create a tool for helps you create and manage your reducer and actions.
+It\`s just a try to create a tool for helps you create and manage your reducer and actions.
 
 Redux-parts is a small library, with no dependies. It has small and very human friendly API. 
 
