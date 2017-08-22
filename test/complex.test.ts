@@ -142,3 +142,109 @@ describe('complex part and base -', () => {
         }).to.deep.equal(state);
     });
 });
+
+const complex_for_initial_state: IComplexPart = {
+    initial_state: {
+        test: 'test'
+    },
+
+    reducer: {
+        clear(state, action, initial_state) {
+            return initial_state;
+        },
+        notCleat(state, action, initial_state) {
+            // nothing in this variable
+            return initial_state;
+        }
+    },
+
+    simple_parts: [
+        CounterPart
+    ],
+
+    complex_parts: {
+        counter: CounterPart,
+        nested: {
+            initial_state: {
+                nested: 'nested',
+            },
+            reducer: {
+                clear(state, action, initial_state) {
+                    return initial_state;
+                }
+            },
+            complex_parts: {
+                counter: CounterPart
+            }
+        }
+    }
+};
+const initialStateNested = {
+    nested: 'nested',
+    counter: CounterPart.initial_state
+};
+
+describe('complex part pass initial state -', () => {
+
+    const initialSate = {
+        ...complex_for_initial_state.initial_state,
+        ...CounterPart.initial_state,
+        counter: CounterPart.initial_state,
+        nested: initialStateNested
+    };
+
+    beforeEach(() => {
+        store = Creator(complex_for_initial_state);
+    });
+
+    it("clear root", function() {
+        const incrementNestedAction = store.actions.counter.increment();
+        const incrementAction = store.actions.increment();
+        const clearAction = store.actions.clear();
+        let state;
+
+        state = store.reducer(state, { type: 'randomType' });
+
+        expect(state).to.deep.equal(initialSate);
+
+        state = store.reducer(state, incrementNestedAction);
+        state = store.reducer(state, incrementAction);
+
+        expect(state).to.not.deep.equal(initialSate);
+
+        state = store.reducer(state, clearAction);
+
+        expect(state).to.deep.equal(initialSate);
+    });
+
+    it("clear nested", function() {
+        const incrementNestedNestedAction = store.actions.nested.counter.increment();
+        const clearNestedAction = store.actions.nested.clear();
+        let state;
+
+        state = store.reducer(state, { type: 'randomType' });
+
+        expect(state.nested).to.deep.equal(initialStateNested);
+
+        state = store.reducer(state, incrementNestedNestedAction);
+
+        expect(state.nested).to.not.deep.equal(initialStateNested);
+
+        state = store.reducer(state, clearNestedAction);
+
+        expect(state.nested).to.deep.equal(initialStateNested);
+    });
+
+    it("if not include 'clear' not pass", function() {
+        const notCleatAction = store.actions.notCleat();
+        let state;
+
+        state = store.reducer(state, { type: 'randomType' });
+
+        expect(state).to.deep.equal(initialSate);
+
+        state = store.reducer(state, notCleatAction);
+
+        expect(state).to.be.undefined;
+    });
+});

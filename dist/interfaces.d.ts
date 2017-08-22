@@ -2,7 +2,7 @@ export declare type Actions = {
     [key: string]: (...args) => any;
 };
 export declare type Reducer = {
-    [key: string]: (state: any, action: any) => any;
+    [key: string]: (state: any, action: any, initial_state?: any) => any;
 };
 export interface ISimplePart {
     reducer: Reducer;
