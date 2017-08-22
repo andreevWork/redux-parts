@@ -3,7 +3,7 @@ export type Actions = {
 };
 
 export type Reducer = {
-    [key: string]: (state: any, action: any) => any;
+    [key: string]: (state: any, action: any, initial_state?: any) => any;
 };
 
 export interface ISimplePart {

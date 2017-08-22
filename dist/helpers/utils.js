@@ -34,13 +34,14 @@ export function getByPath(obj, str, delimiter) {
     }
     var path = str.split(delimiter);
     var key;
+    var new_obj = obj;
     while (key = path.shift()) {
-        obj = obj[key];
-        if (!obj) {
+        new_obj = new_obj[key];
+        if (!new_obj) {
             return null;
         }
     }
-    return obj;
+    return new_obj;
 }
 export function mergeByPath(obj, str, value, delimiter) {
     if (delimiter === void 0) { delimiter = DELIMITER; }

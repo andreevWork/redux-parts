@@ -33,16 +33,17 @@ export function getByPath(obj: any, str: string, delimiter: string = DELIMITER) 
 
     const path = str.split(delimiter);
     let key;
+    let new_obj = obj;
 
     while(key = path.shift()) {
-        obj = obj[key];
+        new_obj = new_obj[key];
 
-        if (!obj) {
+        if (!new_obj) {
             return null;
         }
     }
 
-    return obj;
+    return new_obj;
 }
 
 export function mergeByPath(obj: any, str: string, value: any, delimiter: string = DELIMITER) {
