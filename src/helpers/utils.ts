@@ -65,10 +65,10 @@ export function mergeByPath(obj: any, str: string, value: any, delimiter: string
     let nested_value;
 
     for (let key of path) {
-        nested_value = nested[key];
+        nested_value = nested[key] || {};
 
-        if (!nested_value || typeof nested_value !== 'object') {
-            throw Error(`mergeByPath: key "${key}" in path "${str}" contains value type "${typeof nested_value}", not object`);
+        if (typeof nested_value !== 'object') {
+            throw Error(`Redux-parts: state must be an object not "${typeof nested_value}"`);
         }
 
         nested[key] = {

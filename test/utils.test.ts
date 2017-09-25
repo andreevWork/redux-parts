@@ -87,7 +87,7 @@ describe("utils - ", function() {
 
 
         it("If not value by path - throw error", function() {
-            expect(() => mergeByPath({a: 10}, 'a.b', 5)).to.throw('mergeByPath: key "a" in path "a.b" contains value type "number", not object');
+            expect(() => mergeByPath({a: 10}, 'a.b', 5)).to.throw('Redux-parts: state must be an object not "number"');
         });
 
     });
